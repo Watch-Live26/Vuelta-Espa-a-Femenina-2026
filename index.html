@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Live Sports Stream</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+
+background:linear-gradient(120deg,#000,#0f2027,#203a43);
+color:white;
+text-align:center;
+
+}
+
+header{
+
+padding:20px;
+font-size:28px;
+font-weight:700;
+background:#000;
+
+}
+
+.event-title{
+
+font-size:34px;
+margin-top:30px;
+
+}
+
+.image-box{
+
+width:90%;
+max-width:850px;
+
+margin:40px auto;
+
+position:relative;
+
+border-radius:15px;
+overflow:hidden;
+
+box-shadow:0 0 40px rgba(0,0,0,.6);
+
+}
+
+.image-box img{
+
+width:100%;
+display:block;
+
+}
+
+/* PLAY BUTTON */
+
+.play{
+
+position:absolute;
+
+top:50%;
+left:50%;
+
+transform:translate(-50%,-50%);
+
+width:90px;
+height:90px;
+
+background:red;
+
+border-radius:50%;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+cursor:pointer;
+
+box-shadow:0 0 30px red;
+
+}
+
+.play:after{
+
+content:'';
+
+border-left:30px solid white;
+border-top:18px solid transparent;
+border-bottom:18px solid transparent;
+
+margin-left:6px;
+
+}
+
+/* BUFFER ANIMATION */
+
+.buffer{
+
+position:absolute;
+
+top:50%;
+left:50%;
+
+transform:translate(-50%,-50%);
+
+width:70px;
+height:70px;
+
+border:6px solid rgba(255,255,255,.3);
+border-top:6px solid white;
+
+border-radius:50%;
+
+animation:spin 1s linear infinite;
+
+display:none;
+
+}
+
+@keyframes spin{
+
+0%{transform:translate(-50%,-50%) rotate(0)}
+100%{transform:translate(-50%,-50%) rotate(360deg)}
+
+}
+
+/* VIEWER COUNTER */
+
+.viewer{
+
+position:absolute;
+
+top:15px;
+left:15px;
+
+background:rgba(0,0,0,.7);
+
+padding:6px 12px;
+
+border-radius:20px;
+
+font-size:14px;
+
+}
+
+.viewer span{
+
+color:red;
+font-weight:700;
+
+}
+
+/* BUTTONS */
+
+.btn{
+
+display:inline-block;
+
+margin:10px;
+padding:14px 30px;
+
+background:red;
+
+color:white;
+
+border-radius:30px;
+
+text-decoration:none;
+
+font-weight:600;
+
+}
+
+.section{
+
+padding:60px 20px;
+
+}
+
+.devices img{
+
+width:50px;
+margin:10px;
+
+filter:invert(1);
+
+}
+
+.details{
+
+max-width:800px;
+margin:auto;
+
+line-height:1.8;
+
+opacity:.9;
+
+}
+
+footer{
+
+margin-top:40px;
+
+padding:20px;
+
+background:#000;
+
+font-size:14px;
+
+opacity:.7;
+
+}
+
+/* POPUP */
+
+.popup{
+
+position:fixed;
+
+top:0;
+left:0;
+
+width:100%;
+height:100%;
+
+background:rgba(0,0,0,.9);
+
+display:none;
+
+align-items:center;
+justify-content:center;
+
+z-index:1000;
+
+}
+
+.popup-box{
+
+background:#111;
+
+padding:40px;
+
+border-radius:15px;
+
+max-width:420px;
+
+width:90%;
+
+animation:fade .5s;
+
+}
+
+@keyframes fade{
+
+from{opacity:0; transform:scale(.8)}
+to{opacity:1; transform:scale(1)}
+
+}
+
+.popup h2{
+
+margin-bottom:15px;
+
+}
+
+.popup p{
+
+opacity:.8;
+margin-bottom:25px;
+
+}
+
+.create-btn{
+
+padding:15px 35px;
+
+background:linear-gradient(45deg,#ff0000,#ff6600);
+
+border:none;
+
+border-radius:30px;
+
+color:white;
+
+font-size:16px;
+
+cursor:pointer;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+LIVE SPORTS STREAM
+
+</header>
+
+<div class="event-title">
+
+Watch Live Sports Event
+
+</div>
+
+<div class="image-box">
+
+<img src="https://images.nbcolympics.com/sites/default/files/2026-02/nbcothumbalt_opening_ceremony_stream_MiCo.jpg">
+
+<div class="viewer">
+👁️ <span id="viewerCount">9048</span> watching now
+
+</div>
+
+<div class="play" onclick="startVideo()"></div>
+
+<div class="buffer" id="buffer"></div>
+
+</div>
+
+<div>
+
+<a class="btn" href="https://lofij.com/af?o=1e610be66d470e9f8f049467bb295270:024e92beb5460650574e7848ac72c21f&img=169&kw=170">Watch Live Now</a>
+
+<a class="btn" href="https://lofij.com/af?o=1e610be66d470e9f8f049467bb295270:024e92beb5460650574e7848ac72c21f&img=169&kw=170">Sign Up Now</a>
+
+</div>
+
+<section class="section">
+
+<h2>Watch On Any Device</h2>
+
+<div class="devices">
+
+<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSV5UNf1xcvWFfUADv6JI2rppM9P8LTyN3P4w&s">
+<img src="https://i.pinimg.com/736x/a2/6f/45/a26f4535a5ef9b1b76084b7caae90887.jpg">
+<img src="https://icon-icons.com/download-file?file=https%3A%2F%2Fimages.icon-icons.com%2F2428%2FPNG%2F512%2Fwindows_black_logo_icon_147049.png&id=147049&pack_or_individual=pack">
+<img src="https://www.iconpacks.net/icons/1/free-youtube-icon-123-thumb.png">
+
+</div>
+
+</section>
+
+<section class="section">
+
+<div class="details">
+
+<h2>We Provide </h2>
+
+<p>
+
+Watch premium sports events live in Ultra HD quality. Compatible with mobile phones, desktops, tablets and smart TVs worldwide.
+
+</p>
+
+</div>
+
+</section>
+
+<footer>
+
+© 2026 Live Sports Network
+
+</footer>
+
+<!-- POPUP -->
+
+<div class="popup" id="popup">
+
+<div class="popup-box">
+
+<h2>Verification Required</h2>
+
+<p>
+
+To watch this live sports event you must create a free account first.
+
+</p>
+
+<button class="create-btn" onclick="goStream()">
+
+Create Free Account
+
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+/* PLAY BUTTON */
+
+function startVideo(){
+
+document.querySelector(".play").style.display="none"
+
+document.getElementById("buffer").style.display="block"
+
+setTimeout(function(){
+
+document.getElementById("buffer").style.display="none"
+
+document.getElementById("popup").style.display="flex"
+
+},2000)
+
+}
+
+/* REDIRECT */
+
+function goStream(){
+
+window.location.href="https://lofij.com/af?o=1e610be66d470e9f8f049467bb295270:024e92beb5460650574e7848ac72c21f&img=169&kw=170"
+
+}
+
+/* FAKE VIEWER COUNTER */
+
+setInterval(function(){
+
+let viewer = document.getElementById("viewerCount")
+
+let num = parseInt(viewer.innerText)
+
+let change = Math.floor(Math.random()*10)
+
+if(Math.random()>0.5){
+
+num += change
+
+}else{
+
+num -= change
+
+}
+
+viewer.innerText = num
+
+},2000)
+
+</script>
+
+</body>
+
+</html>
